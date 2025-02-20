@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 const ProductPage = () => {
   return (
     <div>
-      <Button>Salvar</Button>
+      <Button className="flex w-0.5 flex-col text-2xl">Salvar</Button>
     </div>
   )
 }
