@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getRestaurantBySlug } from "@/data/get-restaurant-by-slug";
 
+import RestaurantCategories from "./components/categories";
 import RestaurantHeader from "./components/header";
 
 interface RestaurantMenuPage {
@@ -11,7 +12,7 @@ interface RestaurantMenuPage {
 }
 
 const isConsumptionMethodValid = (consumptionMethod: string) => {
-  return [ "DINE_IN", "TAKEAWAY"].includes(consumptionMethod.toUpperCase())
+  return [ "DINE_IN", "TAKEAWAY" ].includes(consumptionMethod.toUpperCase())
 }
 
 const RestaurantMenuPage = async ({ params, searchParams }: RestaurantMenuPage) => {
@@ -29,6 +30,7 @@ const RestaurantMenuPage = async ({ params, searchParams }: RestaurantMenuPage) 
   return (
     <div>
       <RestaurantHeader restaurant={restaurant} />
+      <RestaurantCategories restaurant={restaurant} />
     </div>
   )
 }
