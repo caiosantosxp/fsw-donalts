@@ -3,11 +3,14 @@
 import {  Prisma } from "@prisma/client"
 import { ClockIcon, Star } from "lucide-react"
 import Image from "next/image"
-import { useState } from "react"
+import { useContext, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { formatCurrency } from "@/helpers/format-currency"
 
+import { CartContext } from "../context/cart"
+import CartSheet from "./cartSheet"
 import RestaurantProducts from "./products"
 
 interface RestaurantCategoriesProps {
@@ -29,7 +32,12 @@ type MenuCategoryWithProducts = Prisma.MenuCategoryGetPayload<{
 }>
 
 const RestaurantCategories = ({ restaurant }: RestaurantCategoriesProps) => {
-  const [ selectedCategory, setSelectedCategory ] = useState<MenuCategoryWithProducts>(restaurant.menuCategories[0])
+  const [ 
+    selectedCategory, 
+    setSelectedCategory 
+  ] = useState<MenuCategoryWithProducts>(restaurant.menuCategories[0])
+
+  const { products, total, toggleCart, totalQuantity } = useContext(CartContext)
 
   const handleCategoryClick = (category: MenuCategoryWithProducts) => {
     setSelectedCategory(category)
@@ -88,6 +96,26 @@ const RestaurantCategories = ({ restaurant }: RestaurantCategoriesProps) => {
         {selectedCategory.name}
       </h3>
       <RestaurantProducts products={selectedCategory.products} />
+      {products.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 flex w-full item-center justify-between bg-white p-5 border-t">
+          <div>
+            <p className="text-xs text-muted-foreground">Total dos pedidos</p>
+            <p 
+              className="text.sm font-semibold"
+            >
+              {formatCurrency(total)}
+              <span 
+                className="text-muted-foreground text-xs font-normal"
+              >
+                / {totalQuantity}
+                   {' '}{totalQuantity > 1 ? 'itens' : 'item'}
+              </span>
+            </p>
+          </div>
+          <Button onClick={toggleCart}>Ver Sacola</Button>
+          <CartSheet />
+        </div>
+      )}
     </div>
   )
 }

@@ -17,16 +17,17 @@ const CartSheet = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart} >
-      <SheetContent className="w-[80%]">
+      <SheetContent className="w-[80%] ">
         <SheetHeader>
           <SheetTitle className="text-left">Sacola</SheetTitle>
         </SheetHeader>
-        <div className=" flex flex-col h-full">
+        <div className=" flex flex-col h-full py-5">
           <div className="flex-auto">
             {products.map(product => (
               <CartProductItem key={product.id} product={product} />
             ))}
           </div>
+
           <Card className="mb-6">
             <CardContent className="p-5">
               <div className="flex justify-between">
@@ -35,6 +36,7 @@ const CartSheet = () => {
               </div>
             </CardContent>
           </Card>
+          
           <Button 
           onClick={handleFinishedOrder} 
           className="w-full rounded-full"
