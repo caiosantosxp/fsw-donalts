@@ -3,7 +3,8 @@
 import { Product } from "@prisma/client";
 import { createContext, useState } from "react";
 
-interface CartProduct extends Pick<Product, 'id' | 'name' | 'price' | 'imageUrl'> {
+export interface CartProduct 
+  extends Pick<Product, 'id' | 'name' | 'price' | 'imageUrl'> {
   quantity: number;
 }
 
@@ -27,8 +28,25 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const toggleCart = () => setIsOpen(!isOpen);
 
-  const addProduct = ( product : CartProduct ) => {
-    setProducts((prev) => [...prev, product])
+  const addProduct = (product: CartProduct) => {
+    const productIsAlreadyInCart = products.some((prevProduct) => prevProduct.id === product.id);
+  
+    if (!productIsAlreadyInCart) {
+      return setProducts((prev) => [...prev, product]);
+    }
+  
+
+    setProducts((prevProducts) => {
+      return prevProducts.map((prevProduct) => {
+        if (prevProduct.id === product.id) {
+          return {
+            ...prevProduct,
+            quantity: prevProduct.quantity + product.quantity,
+          };
+        }
+        return prevProduct;
+      });
+    });
   };
 
   return (
