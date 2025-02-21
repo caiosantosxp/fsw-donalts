@@ -31,3 +31,7 @@ export function isValidCpf(cpf: string): boolean {
 
   return true;
 }
+
+export function removeCpfPunctuation(cpf: string): string {
+  return cpf.replace(/[\.\-]/g, '');
+}
